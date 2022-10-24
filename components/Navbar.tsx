@@ -11,7 +11,7 @@ export function Navbar() {
         <Button>&rsaquo;</Button>
       </div>
       <div class="flex flex-row items-center gap-4">
-        <a href="/" class="hover:underline">LogIn</a>
+        <a href="/signIn" class="hover:underline">LogIn</a>
         <a href="/" class="hover:underline">SignUp</a>
       </div>
     </nav>

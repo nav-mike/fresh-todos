@@ -12,7 +12,7 @@ export function Navbar() {
       </div>
       <div class="flex flex-row items-center gap-4">
         <a href="/signIn" class="hover:underline">LogIn</a>
-        <a href="/" class="hover:underline">SignUp</a>
+        <a href="/signUp" class="hover:underline">SignUp</a>
       </div>
     </nav>
   );

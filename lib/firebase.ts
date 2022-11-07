@@ -23,3 +23,19 @@ export const signUp = async (email: string, password: string) => {
 
   return await response.json() as ISignUpResponse;
 };
+
+export const signIn = async (email: string, password: string) => {
+  const response = await fetch(
+    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password, returnSecureToken: true }),
+    },
+  );
+  if (!response.ok) throw new Error(response.statusText);
+
+  return await response.json() as ISignUpResponse;
+};

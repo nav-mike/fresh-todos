@@ -1,6 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
 import { z } from "https://deno.land/x/zod@v3.16.1/mod.ts";
-import { signUp } from "../lib/firebase.ts";
 
 const signUpSchema = z.object({
   email: z.string().email(),

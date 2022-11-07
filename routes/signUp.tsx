@@ -20,7 +20,7 @@ export const handler: Handlers = {
       headers: {
         "Location": "/",
         "Set-Cookie":
-          `todos_idToken=${user.idToken}; expires=${now.toUTCString()}; HttpOnly; Path=/`,
+          `todos_idToken=${user.idToken}; expires=${now.toUTCString()};`,
       },
       status: 302,
     });

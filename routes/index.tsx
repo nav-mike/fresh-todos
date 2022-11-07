@@ -1,4 +1,4 @@
-import { Navbar } from "../components/Navbar.tsx";
+import Navbar from "../islands/Navbar.tsx";
 import { TodoList } from "../components/TodoList.tsx";
 
 export default function Home() {

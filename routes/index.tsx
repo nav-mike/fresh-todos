@@ -1,6 +1,5 @@
 import { Navbar } from "../components/Navbar.tsx";
 import { TodoList } from "../components/TodoList.tsx";
-import Counter from "../islands/Counter.tsx";
 
 export default function Home() {
   return (

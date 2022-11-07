@@ -1,50 +1,44 @@
+import { Head } from "https://deno.land/x/fresh@1.1.1/runtime.ts";
+import { Handlers } from "https://deno.land/x/fresh@1.1.1/server.ts";
+import SignUpForm from "../islands/SignUpForm.tsx";
+import { signUp } from "../lib/firebase.ts";
+
+export const handler: Handlers = {
+  POST: async (req, ctx) => {
+    const formData = await req.formData();
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const user = await signUp(email, password);
+
+    const now = new Date();
+    const time = now.getTime();
+    const expireTime = time + +user.expiresIn * 1000;
+    now.setTime(expireTime);
+
+    return new Response(null, {
+      headers: {
+        "Location": "/",
+        "Set-Cookie":
+          `todos_idToken=${user.idToken}; expires=${now.toUTCString()}; HttpOnly; Path=/`,
+      },
+      status: 302,
+    });
+  },
+};
+
 export default function SignUp() {
   return (
-    <div class="flex flex-col gap-4">
-      <div class="p-4 mx-auto">
-        <h1 class="text-2xl font-bold">Sign Up</h1>
-        <form class="flex flex-col gap-4">
-          <div class="flex flex-col gap-2 pt-2">
-            <label class="text-sm font-bold text-gray-500">Email</label>
-            <input
-              class="border border-gray-300 rounded-md p-2"
-              type="email"
-              placeholder="Enter your email"
-            />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-bold text-gray-500">Password</label>
-            <input
-              class="border border-gray-300 rounded-md p-2"
-              type="password"
-              placeholder="Enter your password"
-            />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-bold text-gray-500">
-              Password confirmation
-            </label>
-            <input
-              class="border border-gray-300 rounded-md p-2"
-              type="password"
-              placeholder="Confirm your password"
-            />
-          </div>
-          <button class="bg-blue-500 text-white rounded-md p-2">
-            Sign Up
-          </button>
-          <a
-            href="/signIn"
-            class="flex justify-center bg-gray-500 text-white rounded-md p-2"
-          >
-            Sign In
-          </a>
-          <div class="flex flex-row justify-between gap-4">
-            <button>Google</button>
-            <button>GitHub</button>
-          </div>
-        </form>
+    <>
+      <Head>
+        <title>Sign Up</title>
+      </Head>
+      <div class="flex flex-col gap-4">
+        <div class="p-4 mx-auto">
+          <h1 class="text-2xl font-bold">Sign Up</h1>
+          <SignUpForm />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

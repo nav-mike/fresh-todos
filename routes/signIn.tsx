@@ -1,41 +1,45 @@
+import { Head } from "https://deno.land/x/fresh@1.1.1/runtime.ts";
+import { Handlers } from "https://deno.land/x/fresh@1.1.1/server.ts";
+import SignInForm from "../islands/SignInForm.tsx";
+import { signIn } from "../lib/firebase.ts";
+
+export const handler: Handlers = {
+  POST: async (req, ctx) => {
+    const formData = await req.formData();
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const user = await signIn(email, password);
+
+    const now = new Date();
+    const time = now.getTime();
+    const expireTime = time + +user.expiresIn * 1000;
+    now.setTime(expireTime);
+
+    return new Response(null, {
+      headers: {
+        "Location": "/",
+        "Set-Cookie":
+          `todos_idToken=${user.idToken}; expires=${now.toUTCString()};`,
+      },
+      status: 302,
+    });
+  },
+};
+
 export default function SignIn() {
   return (
-    <div class="flex flex-col gap-4">
-      <div class="p-4 mx-auto">
-        <h1 class="text-2xl font-bold">Sign In</h1>
-        <p class="text-gray-500">Sign in to your account</p>
-        <form class="flex flex-col gap-4">
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-bold text-gray-500">Email</label>
-            <input
-              class="border border-gray-300 rounded-md p-2"
-              type="email"
-              placeholder="Enter your email"
-            />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label class="text-sm font-bold text-gray-500">Password</label>
-            <input
-              class="border border-gray-300 rounded-md p-2"
-              type="password"
-              placeholder="Enter your password"
-            />
-          </div>
-          <button class="bg-blue-500 text-white rounded-md p-2">
-            Sign In
-          </button>
-          <a
-            href="/signUp"
-            class="flex justify-center bg-gray-500 text-white rounded-md p-2"
-          >
-            Sign Up
-          </a>
-          <div class="flex flex-row justify-between gap-4">
-            <button>Google</button>
-            <button>GitHub</button>
-          </div>
-        </form>
+    <>
+      <Head>
+        <title>Sign In</title>
+      </Head>
+
+      <div class="flex flex-col gap-4">
+        <div class="p-4 mx-auto">
+          <h1 class="text-2xl font-bold">Sign In</h1>
+          <SignInForm />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

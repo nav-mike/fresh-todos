@@ -1,4 +1,5 @@
 import { Head } from "https://deno.land/x/fresh@1.1.1/runtime.ts";
+import CreateTodoForm from "../../islands/CreateTodoForm.tsx";
 import Navbar from "../../islands/Navbar.tsx";
 
 export default function NewTodo() {
@@ -12,6 +13,7 @@ export default function NewTodo() {
         <Navbar />
         <div class="p-4 mx-auto max-w-screen-md">
           <h1 class="text-2xl font-bold">New Todo</h1>
+          <CreateTodoForm />
         </div>
         <footer class="absolute bottom-0">
           <a href="https://fresh.deno.dev">

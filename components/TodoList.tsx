@@ -64,6 +64,11 @@ const typeSymbol = (type: Todo["type"]) => {
 export function TodoList() {
   return (
     <div class="flex flex-col gap-4 w-full">
+      <div>
+        <a href="/todos/new" class="text-blue-500">
+          Add new todo
+        </a>
+      </div>
       {todos.map((item) => (
         <div
           class={`${
@@ -72,7 +77,9 @@ export function TodoList() {
         >
           <div>{typeSymbol(item.type as Todo["type"])}</div>
           <div class="flex-1">{item.title}</div>
-          <button>{item.isDone ? "❎" : "✅"}</button>
+          <button title={item.isDone ? "undone" : "done"}>
+            {item.isDone ? "❎" : "✅"}
+          </button>
         </div>
       ))}
     </div>

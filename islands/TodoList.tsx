@@ -1,56 +1,6 @@
-type Todo = {
-  title: string;
-  type: "main" | "addition" | "subtodo";
-  isDone: boolean;
-};
+import { ITodo } from "../lib/firebase.ts";
 
-const todos = [{
-  title: "daily",
-  type: "main",
-  isDone: false,
-}, {
-  title: "[integration] huddle",
-  type: "main",
-  isDone: false,
-}, {
-  title: "[integration] fix webhook",
-  type: "main",
-  isDone: false,
-}, {
-  title: "[v4] blocked timeslots",
-  type: "main",
-  isDone: false,
-}, {
-  title: "[v4]",
-  type: "main",
-  isDone: true,
-}, {
-  title: "text to Retta",
-  type: "addition",
-  isDone: false,
-}, {
-  title: "[c] Bath shelf 3",
-  type: "addition",
-  isDone: false,
-}, {
-  title: "washing machine",
-  type: "subtodo",
-  isDone: false,
-}, {
-  title: "oven",
-  type: "subtodo",
-  isDone: false,
-}, {
-  title: "Bath shelf 1",
-  type: "subtodo",
-  isDone: false,
-}, {
-  title: "Bath shelf 2",
-  type: "subtodo",
-  isDone: false,
-}];
-
-const typeSymbol = (type: Todo["type"]) => {
+const typeSymbol = (type: ITodo["type"]) => {
   switch (type) {
     case "main":
       return "📌";
@@ -61,7 +11,7 @@ const typeSymbol = (type: Todo["type"]) => {
   }
 };
 
-export default function TodoList() {
+export default function TodoList({ data }: { data: ITodo[] }) {
   return (
     <div class="flex flex-col gap-4 w-full">
       <div>
@@ -69,16 +19,16 @@ export default function TodoList() {
           Add new todo
         </a>
       </div>
-      {todos.map((item) => (
+      {data.map((item) => (
         <div
           class={`${
-            item.isDone ? `line-through` : ""
+            item.completed ? `line-through` : ""
           } w-full flex flex-row gap-4 items-center`}
         >
-          <div>{typeSymbol(item.type as Todo["type"])}</div>
+          <div>{typeSymbol(item.type as ITodo["type"])}</div>
           <div class="flex-1">{item.title}</div>
-          <button title={item.isDone ? "undone" : "done"}>
-            {item.isDone ? "❎" : "✅"}
+          <button title={item.completed ? "undone" : "done"}>
+            {item.completed ? "❎" : "✅"}
           </button>
         </div>
       ))}

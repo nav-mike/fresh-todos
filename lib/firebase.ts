@@ -84,3 +84,24 @@ export const createTodo = async (
 
   return await response.json() as { name: string };
 };
+
+export const getTodos = async (idToken: string, localId: string) => {
+  const response = await fetch(
+    `https://deno-todos-default-rtdb.europe-west1.firebasedatabase.app/todos.json?auth=${idToken}&orderBy="userId"&equalTo="${localId}"`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error(response.statusText);
+  }
+
+  const data = await response.json() as { [key: string]: ITodo };
+
+  return Object.keys(data).map((key) => ({ ...data[key], id: key } as ITodo));
+};

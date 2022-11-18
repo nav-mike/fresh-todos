@@ -61,7 +61,7 @@ const typeSymbol = (type: Todo["type"]) => {
   }
 };
 
-export function TodoList() {
+export default function TodoList() {
   return (
     <div class="flex flex-col gap-4 w-full">
       <div>

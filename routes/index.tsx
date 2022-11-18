@@ -1,5 +1,5 @@
 import Navbar from "../islands/Navbar.tsx";
-import { TodoList } from "../components/TodoList.tsx";
+import TodoList from "../islands/TodoList.tsx";
 
 export default function Home() {
   return (

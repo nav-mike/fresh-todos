@@ -1,10 +1,4 @@
-import useUser from "./useUser.tsx";
-
 export default function CreateTodoForm() {
-  const { user } = useUser();
-
-  console.log(user);
-
   return (
     <form class="flex flex-col gap-4" method="POST" action="/todos">
       <div class="flex flex-col gap-2 pt-2">
@@ -15,7 +9,6 @@ export default function CreateTodoForm() {
           name="title"
           placeholder="Enter todos title"
         />
-        <input type="hidden" name="userId" value={user ?? undefined} />
       </div>
 
       <div class="flex flex-col gap-2 pt-2">

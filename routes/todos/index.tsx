@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { getUserData } from "../../lib/firebase.ts";
+import { createTodo, getUserData, ITodo } from "../../lib/firebase.ts";
 
 export const handler: Handlers = {
   async POST(req, ctx) {
@@ -11,7 +11,19 @@ export const handler: Handlers = {
 
     const data = await getUserData(idToken);
     const localId = data.users[0].localId;
+    const formData = await req.formData();
+    const title = formData.get("title") as string;
+    const type = formData.get("type") as string;
+    const date = formData.get("date") as string;
 
-    throw new Error("Not implemented");
+    const todo: ITodo = { title, type, date, completed: false };
+    await createTodo(idToken, localId, todo);
+
+    return new Response(null, {
+      headers: {
+        "Location": "/",
+      },
+      status: 302,
+    });
   },
 };

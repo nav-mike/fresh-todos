@@ -19,13 +19,24 @@ export const handler: Handlers<ITodo[]> = {
     const data: ITodo[] = await getTodos(idToken, localId);
     const currentDate = defaultDate();
 
-    return ctx.render(data.filter((todo) => todo.date === currentDate));
+    return ctx.render(
+      data.filter((todo) => todo.date === currentDate).sort(sortTodosByType),
+    );
   },
 };
 
 const defaultDate = () => {
   const date = new Date();
   return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+};
+
+const sortTodosByType = (x: ITodo, y: ITodo) => {
+  if (x.type === y.type) return 0;
+  if (x.type === "main" && y.type === "addition") return 1;
+  if (x.type === "main" && y.type === "subtodo") return 1;
+  if (x.type === "addition" && y.type === "subtodo") return 1;
+
+  return -1;
 };
 
 export default function Home({ data }: PageProps<ITodo[]>) {

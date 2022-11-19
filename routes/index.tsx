@@ -17,12 +17,15 @@ export const handler: Handlers<ITodo[]> = {
     if (!localId) return ctx.render([]);
 
     const data: ITodo[] = await getTodos(idToken, localId);
-    const date = new Date();
-    const currentDate =
-      `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const currentDate = defaultDate();
 
     return ctx.render(data.filter((todo) => todo.date === currentDate));
   },
+};
+
+const defaultDate = () => {
+  const date = new Date();
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 };
 
 export default function Home({ data }: PageProps<ITodo[]>) {

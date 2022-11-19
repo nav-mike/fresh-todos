@@ -9,14 +9,19 @@ export const handler: Handlers<ITodo[]> = {
       return cookie.trim().startsWith("todos_idToken=");
     })?.split("=")[1];
 
-    if (!idToken) return ctx.renderNotFound();
+    if (!idToken) return ctx.render([]);
 
     const userData = await getUserData(idToken);
     const localId = userData.users[0].localId;
 
-    const data: ITodo[] = await getTodos(idToken, localId);
+    if (!localId) return ctx.render([]);
 
-    return ctx.render(data);
+    const data: ITodo[] = await getTodos(idToken, localId);
+    const date = new Date();
+    const currentDate =
+      `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+    return ctx.render(data.filter((todo) => todo.date === currentDate));
   },
 };
 
